@@ -9,7 +9,9 @@ class DataShow : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_show)
 
+
         textView_Title.text = intent.extras?.getString("Title Key")
         textView_Note.text = intent.extras?.getString("Note Key")
+
     }
 }

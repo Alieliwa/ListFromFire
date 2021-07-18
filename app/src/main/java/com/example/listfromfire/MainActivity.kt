@@ -10,6 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_note.view.*
+import kotlinx.android.synthetic.main.edite.*
+import kotlinx.android.synthetic.main.edite.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             showDialogAddNote()
         }
 
+
         note_list_view.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                var notes = mNoteList?.get(position)
@@ -39,6 +42,36 @@ class MainActivity : AppCompatActivity() {
                 DSIntent.putExtra("Note Key",notes.note)
 
                 startActivity(DSIntent)
+            }
+        note_list_view.onItemLongClickListener  =
+            AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                val alertBuilder = AlertDialog.Builder(this)
+                val view = layoutInflater.inflate(R.layout.edite, null)
+                alertBuilder.setView(view)
+                val alertDialog = alertBuilder.create()
+                alertDialog.show()
+
+               var mnote= mNoteList!!.get(position)
+
+                view.edit_title.setText(mnote.title)
+                view.edit_note.setText(mnote.note)
+
+               view.btn_update.setOnClickListener {
+
+                   var tittlee=  view.edit_title.text.toString()
+                   var noteee =  view.edit_note.text.toString()
+                     mRef!!.child(mnote.id.toString())
+                       .setValue(Note(mnote.id!!,tittlee,noteee,getCurrentDate()))
+                   alertDialog.dismiss()
+               }
+                view.btn_delet.setOnClickListener {
+
+                    mRef?.child(mnote.id.toString())?.removeValue()
+                    alertDialog.dismiss()
+                }
+
+
+                false
             }
     }
     override fun onStart(){
@@ -59,7 +92,6 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun showDialogAddNote() {
-
         val alertBuilder = AlertDialog.Builder(this)
         val view = layoutInflater.inflate(R.layout.add_note, null)
         alertBuilder.setView(view)

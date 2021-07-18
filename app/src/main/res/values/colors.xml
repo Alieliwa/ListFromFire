@@ -8,4 +8,6 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="linecolor">#EEE34A</color>
+    <color name="btn_delet_color">#CE0D0D</color>
+    <color name="btn_up_color">#004DE6</color>
 </resources>
